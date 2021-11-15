@@ -10,21 +10,28 @@
     <svg class="root"></svg>
 </body>
 <script type="module">
+    
     import * as d3 from "https://cdn.skypack.dev/d3@6";
     const response = await fetch("https://raw.githubusercontent.com/peanut-lover/d3-tool-box/master/data/flare-2.json")
     const data = await  response.json();
+    
     const root = d3.hierarchy(data)
                     .sum(d => d.value)
                     .sort((a, b) => b.value - a.value)
                     .eachAfter(d => d.index = d.parent ? d.parent.index = d.parent.index + 1 || 0 : 0)
 
-    
-    const width = Number(window.innerWidth);
-    const height = 600;
     const margin = {top: 30, right: 30, bottom: 0, left: 10}
     const barStep = 27;
     const barPadding = 3 / barStep;
     const duration = 750;
+
+    const width = Number(window.innerWidth);
+    const height = (function () {
+        let max = 1;
+        root.each(d => d.children && (max = Math.max(max, d.children.length)));
+        return max * barStep + margin.top + margin.bottom;
+    })();
+    
 
     const xAxis = g => g
         .attr("class", "x-axis")
