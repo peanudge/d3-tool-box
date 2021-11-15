@@ -44,7 +44,6 @@
     const color = d3.scaleOrdinal([true, false], ["steelblue", "#aaa"]);
     const x = d3.scaleLinear().range([margin.left, width - margin.right]);
 
-    // 각 조각들이  x, y 로 이동
     function stagger () {
         let value = 0;
         return (d, i) => {
@@ -54,7 +53,6 @@
         }
     }
     
-    // y축하나에 x축만 이동시켜서 생성
     function stack (i) {
         let value = 0;
         return d => {
